@@ -6,7 +6,7 @@ import json
 import requests
 import os
 
-class TwitterClient():
+class Tweety():
 	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, token=None, token_secret=None):
 		self.consumer_key = consumer_key
 		self.consumer_secret = consumer_secret
@@ -15,8 +15,6 @@ class TwitterClient():
 		self.authenticated = False
 		self.auth = None
 
-
-		# Don't need this line once we have the key and secret in hand:
 		if not self.authenticated:
 			try:
 				self.auth = self.authenticate(consumer_key=consumer_key, consumer_secret=consumer_secret)	
@@ -140,6 +138,7 @@ class TwitterClient():
 		Get Friends: https://dev.twitter.com/rest/reference/get/friends/ids
 		Get Followers: https://dev.twitter.com/rest/reference/get/followers/ids
 		Get Friendships: https://dev.twitter.com/rest/reference/get/friendships/lookup
+		Destroy Friendships: https://dev.twitter.com/rest/reference/post/friendships/destroy
 
 		'''
 		followers_url = 'followers/ids.json'
@@ -153,14 +152,11 @@ class TwitterClient():
 
 if __name__ == '__main__':
 	# Consumer stuff:
-	consumer_key = '1snYlkdkoFZpv1JZ1Wo1CMj9G' # API Key
-	consumer_secret = 'lzQt07a5dVP5nVHmPWkxIWB40LNVuYlAEpRBvLmNNodZhCto5d' # API Secret
-	url = 'https://api.twitter.com/1.1/statuses/home_timeline.json'
-	twitter_client = TwitterClient(consumer_key=consumer_key, consumer_secret=consumer_secret)
+	consumer_key = 'dM18eMT3vw3YFL6jCBuXxyMqU' # API Key
+	consumer_secret = 'pUlEWkmz0rHHvwpVykHWBlOcIMP69tuxbeo50kE45kJAehKDQw' # API Secret	
+	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
 	twitter_client.remove_non_friends()
-	twitter_client.get_credentials()
-	# home_timeline = twitter_client.twitter_request(url=url, consumer_key=consumer_key, consumer_secret=consumer_secret)
-	# print home_timeline
+	twitter_client.get_credentials()	
 
 
 
