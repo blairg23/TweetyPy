@@ -152,8 +152,8 @@ class Tweety():
 
 if __name__ == '__main__':
 	# Consumer stuff:
-	consumer_key = 'dM18eMT3vw3YFL6jCBuXxyMqU' # API Key
-	consumer_secret = 'pUlEWkmz0rHHvwpVykHWBlOcIMP69tuxbeo50kE45kJAehKDQw' # API Secret	
+	consumer_key = 'RcPVxXd9RqG0lc6ITkZFcImXh' # API Key
+	consumer_secret = 'vE95Ub92p621MyyEmJ5ulmXLIi0rRuFi1Z1ux6af51xRUhSvK0' # API Secret	
 	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
 	twitter_client.remove_non_friends()
 	twitter_client.get_credentials()	
