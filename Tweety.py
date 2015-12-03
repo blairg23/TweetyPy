@@ -128,7 +128,7 @@ class Tweety():
 		'''
 		creds_url = 'account/verify_credentials.json'
 		credentials = self.twitter_request(url=self.url+creds_url)
-		print 'Credentials: ', credentials
+		#print 'Credentials: ', credentials
 		return credentials
 
 	def remove_non_friends(self):
@@ -143,10 +143,23 @@ class Tweety():
 		'''
 		followers_url = 'followers/ids.json'
 		friends_url = 'friends/ids.json'
-		followers = self.twitter_request(url=self.url+followers_url)
-		print 'Followers: ', followers
-		friends = self.twitter_request(url=self.url+friends_url)
-		print 'Friends: ', friends
+		friendships_url = 'friendships/lookup.json'
+		destroy_friend_url = 'friendships/destroy.json'
+
+		followers = json.loads(self.twitter_request(url=self.url+followers_url))
+		#print 'Followers: ', followers
+		friends = json.loads(self.twitter_request(url=self.url+friends_url))
+		#print 'Friends: ', friends
+		credentials = json.loads(self.get_credentials())
+		screen_name = credentials['screen_name']
+		print 'Screen Name:', screen_name
+		# payload = {
+		# 			'screen_name':screen_name,
+		# 			'user_id': friends['ids'][0]
+		# }
+		payload = "screen_name="+screen_name+"&user_id"+str(friends['ids'][0])
+		friendships = self.twitter_request(url=self.url+friendships_url, post_body=payload)
+		print friendships
 
 
 
@@ -155,8 +168,7 @@ if __name__ == '__main__':
 	consumer_key = 'RcPVxXd9RqG0lc6ITkZFcImXh' # API Key
 	consumer_secret = 'vE95Ub92p621MyyEmJ5ulmXLIi0rRuFi1Z1ux6af51xRUhSvK0' # API Secret	
 	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
-	twitter_client.remove_non_friends()
-	twitter_client.get_credentials()	
+	twitter_client.remove_non_friends()	
 
 
 
