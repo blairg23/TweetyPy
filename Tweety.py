@@ -157,9 +157,10 @@ class Tweety():
 		# 			'screen_name':screen_name,
 		# 			'user_id': friends['ids'][0]
 		# }
-		payload = "screen_name="+screen_name+"&user_id"+str(friends['ids'][0])
-		friendships = self.twitter_request(url=self.url+friendships_url, post_body=payload)
+		payload = "screen_name=dotmosweb"
+		friendships = self.twitter_request(url=self.url+friendships_url+'?screen_name=dotmosweb')
 		print friendships
+
 
 
 
