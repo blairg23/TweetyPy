@@ -9,10 +9,12 @@ import os
 from requests_oauthlib import OAuth1
 
 class Tweety():
-	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, token=None, token_secret=None):
+	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, token=None, token_secret=None, debug=False):
 		self._consumer_key = consumer_key
 		self._consumer_secret = consumer_secret
 		self.url = url
+
+		self.debug=debug
 
 		self.authenticated = False
 		self.auth = None
@@ -135,28 +137,32 @@ class Tweety():
 		#print 'Credentials: ', credentials
 		return credentials
 
-	def remove_non_friends(self):
+	def remove_non_friends(self, debug=False):
 		'''
-		Removes any "followed" Twitter users who are not "friends".
+		Removes any Twitter "friends" who are not following the authenticated user.
 
 		Get Friends: https://dev.twitter.com/rest/reference/get/friends/ids
 		Get Followers: https://dev.twitter.com/rest/reference/get/followers/ids
 		Get Friendships: https://dev.twitter.com/rest/reference/get/friendships/lookup
 		Destroy Friendships: https://dev.twitter.com/rest/reference/post/friendships/destroy
 
-		'''
+		'''		
 		followers_url = 'followers/ids.json'
 		friends_url = 'friends/ids.json'
 		friendships_url = 'friendships/lookup.json'
 		destroy_friend_url = 'friendships/destroy.json'
 
-		followers = json.loads(self.twitter_request(url=self.url+followers_url))
-		print 'Followers: ', followers
+		followers = json.loads(self.twitter_request(url=self.url+followers_url))			
 		friends = json.loads(self.twitter_request(url=self.url+friends_url))
-		print 'Friends: ', friends
-		credentials = json.loads(self.get_credentials())
-		screen_name = credentials['screen_name']
-		print 'Screen Name:', screen_name
+
+		if debug:
+			credentials = json.loads(self.get_credentials())
+			screen_name = credentials['screen_name']
+			print '[Authenticated User]----------------------'
+			print '[Screen Name: ]', screen_name
+			print '[Followers: ]', followers
+			print '[Friends: ]', friends
+			print '------------------------------------------'
 
 		num_followed = 0
 		for friend_id in friends['ids']:
@@ -168,14 +174,13 @@ class Tweety():
 				print 'Stopped following {screen_name}, user_id={user_id}'.format(screen_name=destroy['screen_name'], user_id=friend_id)
 				num_followed += 1
 		print 'Removed {num_followed} friends.'.format(num_followed=num_followed)
-		
+
 
 if __name__ == '__main__':
 	# Consumer stuff:
 	consumer_key = 'RcPVxXd9RqG0lc6ITkZFcImXh' # API Key
 	consumer_secret = 'vE95Ub92p621MyyEmJ5ulmXLIi0rRuFi1Z1ux6af51xRUhSvK0' # API Secret	
 	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
-	twitter_client.remove_non_friends()	
+	twitter_client.remove_non_friends(debug=False)	
 
-
-
+	
