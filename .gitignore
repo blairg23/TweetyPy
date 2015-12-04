@@ -1,6 +1,9 @@
 # Mac-Specific
 *.DS_Store
 
+# Datafiles
+*.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
