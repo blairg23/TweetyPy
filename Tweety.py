@@ -9,7 +9,7 @@ import os
 from requests_oauthlib import OAuth1
 
 class Tweety():
-	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, token=None, token_secret=None, debug=False):
+	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, key=None, secret=None, debug=False):
 		self._consumer_key = consumer_key
 		self._consumer_secret = consumer_secret
 		self.url = url
@@ -23,11 +23,11 @@ class Tweety():
 			try:
 				self.auth = self.authenticate(consumer_key=self._consumer_key, consumer_secret=self._consumer_secret)	
 				self.authenticated = True
-				print 'yep'
+				print '[Authenticated]'
 			except Exception, e:
 				print '[ERROR]', e
 				self.authenticated = False
-				print 'nope'
+				print '[Not Authenticated]'
 
 	def authenticate(self, consumer_key=None, consumer_secret=None, debug=False):
 		'''
