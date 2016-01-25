@@ -5,13 +5,15 @@ import webbrowser
 import json
 import requests
 import os
+import argparse
 
 from requests_oauthlib import OAuth1
 
 class Tweety():
-	def __init__(self, url='https://api.twitter.com/1.1/', consumer_key=None, consumer_secret=None, key=None, secret=None, debug=False):
+	def __init__(self, url='https://api.twitter.com/1.1/', username=None, consumer_key=None, consumer_secret=None, key=None, secret=None, debug=False):
 		self._consumer_key = consumer_key
 		self._consumer_secret = consumer_secret
+		self.username = username
 		self.url = url
 
 		self.debug=debug
@@ -21,7 +23,7 @@ class Tweety():
 
 		if not self.authenticated:
 			try:
-				self.auth = self.authenticate(consumer_key=self._consumer_key, consumer_secret=self._consumer_secret)	
+				self.auth = self.authenticate(username=username, consumer_key=self._consumer_key, consumer_secret=self._consumer_secret)	
 				self.authenticated = True
 				print '[Authenticated]'
 			except Exception, e:
@@ -29,7 +31,7 @@ class Tweety():
 				self.authenticated = False
 				print '[Not Authenticated]'
 
-	def authenticate(self, consumer_key=None, consumer_secret=None, debug=False):
+	def authenticate(self, username=None, consumer_key=None, consumer_secret=None, debug=False):
 		'''
 		Given a consumer key and secret, returns a dictionary with the
 		consumer and token.
@@ -37,8 +39,8 @@ class Tweety():
 		# Set up unauthorized consumer:
 		consumer = oauth2.Consumer(key=consumer_key, secret=consumer_secret)
 		
-		if os.path.exists('oauth.json'):	
-			with open('oauth.json') as infile:
+		if os.path.exists(os.path.join('data', username+'.json')):	
+			with open(os.path.join('data', username+'.json')) as infile:
 				auth = json.load(infile)
 			self._key = auth['_key']
 			self._secret = auth['_secret']
@@ -108,7 +110,7 @@ class Tweety():
 
 			# Save the file (totally insecure)
 			token_dict = {'_key': self._key, '_secret': self._secret}
-			with open('oauth.json', 'w') as outfile:
+			with open(os.path.join('data', username+'.json'), 'w') as outfile:
 				json.dump(token_dict, outfile)
 
 
@@ -177,9 +179,15 @@ class Tweety():
 
 
 if __name__ == '__main__':
+	arg_parser = argparse.ArgumentParser(description='Stops following Twitter users who do not follow the given Twitter account.')
+	arg_parser.add_argument('--username', required=True, help='The Twitter username to perform actions with.')
+	parsed_args = arg_parser.parse_args()
+
+	username = parsed_args.username
+
 	# Consumer stuff:
 	consumer_key = 'RcPVxXd9RqG0lc6ITkZFcImXh' # API Key
 	consumer_secret = 'vE95Ub92p621MyyEmJ5ulmXLIi0rRuFi1Z1ux6af51xRUhSvK0' # API Secret	
-	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
-	twitter_client.remove_non_friends(debug=False)
+	tweetypy_client = Tweety(username=username, consumer_key=consumer_key, consumer_secret=consumer_secret)
+	tweetypy_client.remove_non_friends(debug=False)
 	
