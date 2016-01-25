@@ -56,7 +56,7 @@ class Tweety():
 			# said access token.
 			resp, content = client.request(request_token_url, "GET")
 			if resp['status'] != '200':
-				raise Exception("Invalid response %s." % resp['status'])    
+				raise Exception("Invalid response %s." % resp['status'])
 
 			if debug:
 				print "Response:\n{resp}\n".format(resp=resp) 
