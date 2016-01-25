@@ -56,7 +56,7 @@ class Tweety():
 			# said access token.
 			resp, content = client.request(request_token_url, "GET")
 			if resp['status'] != '200':
-				raise Exception("Invalid response %s." % resp['status'])
+				raise Exception("Invalid response %s." % resp['status'])    
 
 			if debug:
 				print "Response:\n{resp}\n".format(resp=resp) 
@@ -181,6 +181,5 @@ if __name__ == '__main__':
 	consumer_key = 'RcPVxXd9RqG0lc6ITkZFcImXh' # API Key
 	consumer_secret = 'vE95Ub92p621MyyEmJ5ulmXLIi0rRuFi1Z1ux6af51xRUhSvK0' # API Secret	
 	twitter_client = Tweety(consumer_key=consumer_key, consumer_secret=consumer_secret)
-	twitter_client.remove_non_friends(debug=False)	
-
+	twitter_client.remove_non_friends(debug=False)
 	
